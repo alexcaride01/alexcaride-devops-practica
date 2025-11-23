@@ -1,17 +1,18 @@
-import uuid   # Importamos la librería uuid para generar identificadores únicos
+from __future__ import annotations
+from uuid import uuid4, UUID
 
 
 class Producto:
     def __init__(self, nombre, precio, stock):
         # Generamos un identificador único para cada producto
-        self.id = str(uuid.uuid4())
+        self.id = uuid4()
         # Guardamos el nombre del producto eliminando espacios sobrantes
         self.nombre = nombre.strip()
         # Guardamos el precio
         self.precio = precio
         # Guardamos el stock inicial
         self.stock = stock
-
+        
         # Validamos que el precio no sea negativo
         if self.precio < 0:
             raise ValueError("El precio no puede ser negativo.")
@@ -21,11 +22,11 @@ class Producto:
         # Validamos que el nombre no esté vacío
         if not self.nombre:
             raise ValueError("El nombre no puede estar vacío.")
-
+    
     def hay_stock(self, cantidad):
         # Comprobamos si tenemos suficientes unidades disponibles
         return cantidad > 0 and self.stock >= cantidad
-
+    
     def actualizar_stock(self, delta):
         # Calculamos el nuevo stock tras aplicar el cambio
         nuevo_stock = self.stock + delta
@@ -34,10 +35,10 @@ class Producto:
             raise ValueError("El stock no puede ser negativo.")
         # Actualizamos el stock
         self.stock = nuevo_stock
-
+    
     def __str__(self):
         # Devolvemos una representación en texto del producto
-        return f"[Producto#{self.id[:8]}] {self.nombre} - {self.precio:.2f}€ (stock: {self.stock})"
+        return f"[Producto#{self.id}] {self.nombre} - {self.precio:.2f}€ (stock: {self.stock})"
 
 
 class ProductoElectronico(Producto):
@@ -49,7 +50,7 @@ class ProductoElectronico(Producto):
             raise ValueError("La garantía no puede ser negativa.")
         # Guardamos la garantía en meses
         self.garantia_meses = garantia_meses
-
+    
     def __str__(self):
         # Mostramos también la garantía en la representación del producto
         return super().__str__() + f" | garantía: {self.garantia_meses} meses"
@@ -69,7 +70,7 @@ class ProductoRopa(Producto):
         self.talla = talla.strip()
         # Guardamos el color
         self.color = color.strip()
-
+    
     def __str__(self):
         # Mostramos también la talla y el color en la representación del producto
         return super().__str__() + f" | talla: {self.talla}, color: {self.color}"
